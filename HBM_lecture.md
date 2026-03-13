@@ -1,0 +1,491 @@
+<!-- .slide: class="title-slide" -->
+# Different Routes of Reaction Time Slowing in Cognitive Development and Aging
+
+### Shifted Weibull Decomposition via Hierarchical Bayesian Modeling
+
+*N* = 1,652 | Five age groups (4–73 years)
+
+---
+
+## Roadmap
+
+1. **Background** — Processing speed across the lifespan; why mean RT is not enough
+2. **Methods** — Tablet-based SRT/MT task; shifted Weibull + HBM
+3. **Results & Discussion** — Dissociable routes of slowing; children are not small elderly
+
+---
+
+<!-- .slide: class="section-divider" -->
+## Background
+
+---
+
+## The U-Shaped RT Trajectory
+
+- SRT **decreases** from childhood through young adulthood (Kail, 1991)
+- SRT **increases** from young adulthood through old age (Salthouse, 1996)
+- ~0.5 ms/year slowing from age 20 in 1,200+ adults (Fozard et al., 1994)
+- Slowing begins mid-20s, accelerates after 60 in 7,000+ UK adults (Der & Deary, 2006)
+- Confirmed in >200,000 web-based participants (Talboom et al., 2021)
+
+The U-shape parallels **white matter myelination** trajectories (Bartzokis et al., 2010; Chevalier et al., 2015).
+
+---
+
+## Proportional Slowing — and Its Limits
+
+The classic account treats processing speed as **unitary**:
+
+- A single multiplicative factor predicts older adults' RTs from young adults' RTs (Cerella, 1985; Cerella & Hale, 1994)
+
+**But this breaks down:**
+
+> Age-related SRT slowing reflects **slower response preparation**, not delayed initiation. The preparation-to-initiation gap remains constant across the adult lifespan (Forrence et al., 2023).
+
+If slowing were truly unitary, all temporal components should scale proportionally — they do not.
+
+---
+
+## Cognitive Processes Underlying SRT
+
+SRT engages a chain of **separable stages** (Sanders, 1998; Sternberg, 1969):
+
+1. **Sensory transduction** — peripheral encoding
+2. **Temporal preparation** — building readiness for the response
+3. **Sustained attention** — maintaining readiness across trials
+4. **Motor programming** — specifying the movement
+5. **Motor initiation** — executing the release
+
+Each stage follows a **distinct developmental schedule** — motivating a distributional decomposition.
+
+---
+
+## Beyond Mean RT
+
+Two participants can have **identical mean RTs** but completely different distributions:
+
+- One responds near the mean on every trial (consistent)
+- One produces fast responses + occasional very slow outliers (attentional lapses)
+
+**Intraindividual variability (IIV):**
+
+- IIV predicts cognitive decline beyond mean RT (Dykiert et al., 2012)
+- Children's IIV decreases across development, sometimes exceeding mean RT changes (Williams et al., 2005)
+
+We need a **distributional approach** to decompose what drives the U-shaped trajectory.
+
+---
+
+## The Shifted Weibull Distribution
+
+$$f(x;\,\theta) = \frac{\kappa}{\lambda}\left(\frac{x - t_0}{\lambda}\right)^{\kappa-1} e^{-\left(\frac{x-t_0}{\lambda}\right)^{\kappa}}, \quad x > t_0$$
+
+| Parameter | Symbol | Cognitive interpretation |
+|---|---|---|
+| **Shift** | $t_0$ | Irreducible minimum latency; **peripheral processes** |
+| **Scale** | $\lambda$ | Spread above the floor; **central processing efficiency** |
+| **Shape** | $\kappa$ | Distributional skewness; **trial-to-trial consistency** |
+
+Selective influence evidence: stimulus difficulty affects $\lambda$ without altering $t_0$ (Rouder et al., 2005).
+
+---
+
+## Why Hierarchical Bayesian Modeling?
+
+**The problem:** Tablet-based tasks yield many participants but **few trials per person** (20 here). MLE is unstable with small trial counts.
+
+**The HBM solution — partial pooling:**
+
+- Individual parameters are draws from a group-level distribution
+- Estimates are a principled compromise between own data and group structure
+- Degree of shrinkage $\propto$ individual vs. group precision
+- Full posterior distributions propagate uncertainty
+- Framework designed specifically for Weibull (Rouder et al., 2003, 2005)
+
+---
+
+## Research Questions
+
+> 1. Do the three Weibull parameters form a **coherent latent factor** (unitary speed), or are they empirically distinct?
+
+> 2. Do children and older adults show the **same or different** parametric profiles relative to young adults?
+
+> 3. Does the **correlation structure** among parameters change across age groups (dedifferentiation hypothesis)?
+
+---
+
+<!-- .slide: class="section-divider" -->
+## Methods
+
+---
+
+## Participants
+
+**Final sample: *N* = 1,652** (exclusions: <16 valid trials)
+
+| Age Group | *N* | Male/Female | Mean Age (*SD*) |
+|---|---|---|---|
+| Young children (4–6 y) | 110 | 65/45 | 5.4 (0.8) |
+| Children (7–12 y) | 117 | 94/23 | 9.4 (1.6) |
+| Adolescents (13–17 y) | 56 | 50/6 | 16.3 (1.5) |
+| Young adults (18–30 y) | 1,297 | 824/473 | 20.5 (2.6) |
+| Older adults (65+ y) | 72 | 27/45 | 73.8 (6.3) |
+
+Ethics: National Taiwan University (202305EM073, 202409EM029)
+
+---
+
+## Task Design
+
+**Tablet-based visuomotor reaching task** — hardware-level separation of SRT from MT.
+
+<div class="two-col">
+<div class="col">
+
+- Non-dominant hand anchored at screen vertex
+- Dominant hand presses red square; after variable foreperiod (1–3 s), cyan target appears
+- **SRT** = target onset → finger release
+- **MT** = finger release → target touch
+- 5 practice + **20 formal trials**
+
+</div>
+<div class="col">
+
+![](figures/procedure.png)
+
+</div>
+</div>
+
+---
+
+## Data Preparation
+
+**Outlier detection** (log-transformed Tukey fences):
+
+1. Log-transform SRT and MT
+2. Exclude trials outside $[Q_1 - 2 \times IQR,\ Q_3 + 2 \times IQR]$
+3. Remove anticipatory responses (SRT < 150 ms)
+4. Exclude participants with < 16 valid trials
+
+**Trial retention:** 17.8–18.6 out of 20 across groups
+
+**Outlier rates:** 6.8–10.9% (modest; highest in adolescents)
+
+---
+
+## The Shifted Weibull Model
+
+For participant $i$, trial $j$:
+
+$$RT_{ij} = t_{0i} + \text{Weibull}(\lambda_i,\, \kappa_i)$$
+
+| Parameter | Cognitive meaning | Expected direction |
+|---|---|---|
+| $t_0$ (shift) | Peripheral latency floor | ↑ in slow groups |
+| $\lambda$ (scale) | Central processing efficiency | ↑ in slow groups |
+| $\kappa$ (shape) | Trial-to-trial consistency | ↓ in inconsistent groups |
+
+---
+
+## HBM Estimation
+
+**Hierarchical priors** (by age group $g$):
+
+$$t_{0i} \sim \text{Uniform}(0,\, \min(RT_{i\cdot}))$$
+$$\lambda_i^{-1} \sim \text{Gamma}(\xi_1^{[g]},\, \xi_2^{[g]})$$
+$$\kappa_i \sim \text{Gamma}(\eta_1^{[g]},\, \eta_2^{[g]})$$
+
+**MCMC:** 4 chains, 60,000 iterations, 20,000 burn-in, thinning = 5 → 32,000 posterior samples
+
+**Convergence criteria:** $\hat{R} < 1.10$; ESS > 100
+
+**Computation:** ~0.7 hours per model
+
+---
+
+## Analytic Strategy
+
+Three steps after model validation:
+
+1. **Correlation analysis** — overall, partial (controlling age), and pooled within-group matrices
+2. **Age-group comparison** — Welch's ANOVA + Kruskal-Wallis; Games-Howell post-hoc; Cohen's $d$
+3. **Pattern interpretation** — test against proportional slowing vs. dissociable-routes predictions
+
+---
+
+<!-- .slide: class="section-divider" -->
+## Results & Discussion
+
+---
+
+## Descriptive Statistics
+
+**U-shaped trajectory confirmed for both SRT and MT:**
+
+<div class="two-col">
+<div class="col">
+
+| Age Group | *N* | Median SRT (IQR) | Median MT (IQR) |
+|---|---|---|---|
+| Young children (<7 y) | 110 | 610.5 (163.4) | 618.1 (444.0) |
+| Children (7–12 y) | 117 | 446.6 (80.9) | 330.6 (92.8) |
+| Adolescents (13–17 y) | 56 | 396.9 (37.1) | 269.7 (49.8) |
+| Adults (18–30 y) | 1,297 | 363.9 (78.9) | 271.0 (80.2) |
+| Older adults (65+ y) | 72 | 529.3 (144.6) | 562.4 (285.2) |
+
+</div>
+<div class="col">
+
+![](figures/halfviolin_by_agegroup_new.png)
+
+</div>
+</div>
+
+---
+
+## Developmental Curves
+
+![](figures/ushape_developmental_curves_new.png)
+
+---
+
+## Model Evaluation Strategy
+
+| Metric | What it measures | Good fit |
+|---|---|---|
+| **RMSE** (ms) | Mismatch between model-predicted and observed quantiles (5th–95th) | Lower is better; < 50 ms for most groups |
+| **MAPE** (%) | Same mismatch, normalized by RT magnitude — comparable across groups | < 5% indicates close fit |
+| **90% Coverage** | Proportion of observed RTs falling within the model's 90% prediction interval | ≥ .90 (nominal); .94–.95 = well calibrated |
+| **PP *p* $T_{min}$** | Does the model capture the **fastest** response? (posterior predictive check on minimum RT) | Near .50 = adequate; < .05 or > .95 = misfit |
+| **PP *p* $T_{SD}$** | Does the model capture **trial-to-trial variability**? (posterior predictive check on RT *SD*) | Near .50 = adequate; < .05 or > .95 = misfit |
+
+**Convergence:** $\hat{R}$ (should be < 1.10) checks whether MCMC chains agree; **ESS** (should be > 100) checks whether enough independent samples were drawn.
+
+---
+
+## Model Fit
+
+**Convergence:** $\hat{R} < 1.10$ met by 95.0% (SRT) and 97.7% (MT) of parameters. ESS > 100 met by 94.6% (SRT) and 97.0% (MT).
+
+| DV | Age Group | RMSE (ms) | MAPE (%) | Coverage | PP *p* $T_{min}$ | PP *p* $T_{SD}$ |
+|---|---|---|---|---|---|---|
+| SRT | <7 y | 78.9 | 6.2 | 0.95 | 0.0% | 0.0% |
+| SRT | 7–12 y | 23.1 | 3.6 | 0.95 | 0.0% | 0.0% |
+| SRT | 13–17 y | 12.4 | 2.6 | 0.94 | 0.0% | 1.8% |
+| SRT | 18–30 y | 22.3 | 3.6 | 0.95 | 0.3% | 1.9% |
+| SRT | 65+ y | 42.3 | 3.7 | 0.95 | 0.0% | 0.0% |
+
+Coverage (.94–.95) exceeds the .90 target — model is **well calibrated**.
+
+---
+
+## SRT — Convergence Diagnostics
+
+![](figures/srt_convergence_dashboard.png)
+
+---
+
+## SRT — Goodness of Fit
+
+![](figures/srt_gof_metrics.png)
+
+---
+
+## MT — Convergence Diagnostics
+
+![](figures/mt_convergence_dashboard.png)
+
+---
+
+## MT — Goodness of Fit
+
+![](figures/mt_gof_metrics.png)
+
+0% extreme $T_{SD}$ values in children and older adults — the groups central to the main finding.
+
+---
+
+## Correlation Structure
+
+![](figures/correlation_heatmap.png)
+
+- $\lambda$ and $t_0$ correlate **moderately-to-strongly across SRT and MT** — fast initiators tend to be fast executors, consistent with shared biological substrates (e.g., myelination)
+- Partial correlations (controlling age) are **nearly identical** to overall — these are genuine individual-differences associations, not artifacts of children and elderly both being slow
+- $\kappa$ is the **odd one out**: $\kappa_{SRT}$–$\kappa_{MT}$ *r* = .12 — consistency in initiation and execution are largely independent, supporting $\kappa$ as capturing something distinct from the speed parameters
+
+---
+
+## Age-Group Differences
+
+**Omnibus tests — all significant, *p* < .001:**
+
+| DV | Parameter | Welch's *F* | $\eta^2$ | Magnitude |
+|---|---|---|---|---|
+| **SRT** | $\lambda$ | *F*(4,166) = 102.00 | **.478** | **Large** |
+| **SRT** | $t_0$ | *F*(4,172) = 80.94 | .289 | Large |
+| **SRT** | $\kappa$ | *F*(4,177) = 44.85 | .085 | Medium |
+| **MT** | $t_0$ | *F*(4,168) = 54.36 | **.375** | **Large** |
+| **MT** | $\lambda$ | *F*(4,169) = 38.96 | .358 | Large |
+| **MT** | $\kappa$ | *F*(4,178) = 91.40 | .149 | Large |
+
+**The critical crossing:** SRT → $\lambda$ dominates ($\eta^2$ = .478) | MT → $t_0$ dominates ($\eta^2$ = .375)
+
+---
+
+## SRT Parameter Distributions by Age Group
+
+![](figures/srt_raincloud_parameters.png)
+
+**Post-hoc ordering** (Games-Howell, *p* < .05; ≈ = n.s.):
+
+- $t_0$: 13–17 < 18–30 < 7–12 < {65+ ≈ <7}
+- $\lambda$: 18–30 < {13–17 ≈ 7–12} < 65+ < <7
+- $\kappa$: <7 < {7–12 ≈ 65+ ≈ 18–30} < 13–17
+
+---
+
+## MT Parameter Distributions by Age Group
+
+![](figures/mt_raincloud_parameters.png)
+
+**Post-hoc ordering** (Games-Howell, *p* < .05; ≈ = n.s.):
+
+- $t_0$: {18–30 ≈ 13–17} < 7–12 < {65+ ≈ <7}
+- $\lambda$: {13–17 ≈ 18–30} < 7–12 < {65+ ≈ <7}
+- $\kappa$: {<7 ≈ 7–12} < 13–17 < {65+ ≈ 18–30}
+
+---
+
+## Post-Hoc Contrasts vs. Young Adults (18–30 y)
+
+<div class="two-col">
+<div class="col">
+
+#### SRT
+
+| Group | $d_{t_0}$ | $d_{\lambda}$ | $d_{\kappa}$ |
+|---|---|---|---|
+| **<7 y** | **1.47\*** | **1.65\*** | **−0.83\*** |
+| 7–12 y | 0.96\* | 1.26\* | −0.19 |
+| 13–17 y | −0.40\* | 1.43\* | 1.24\* |
+| **65+ y** | **1.38\*** | **1.16\*** | **−0.14** |
+
+Children: **large effects on all three**
+
+Older adults: **large $t_0$ & $\lambda$**, n.s. $\kappa$
+
+</div>
+<div class="col">
+
+#### MT
+
+| Group | $d_{t_0}$ | $d_{\lambda}$ | $d_{\kappa}$ |
+|---|---|---|---|
+| **<7 y** | **1.42\*** | **1.19\*** | **−1.40\*** |
+| 7–12 y | 0.73\* | 0.79\* | −1.17\* |
+| 13–17 y | 0.08 | −0.07 | −0.57\* |
+| **65+ y** | **1.28\*** | **1.05\*** | **−0.11** |
+
+Children: **large effects on all three**
+
+Older adults: **large $t_0$ & $\lambda$**, n.s. $\kappa$
+
+</div>
+</div>
+
+\* *p* < .05 (Games-Howell); **bold** = key comparison groups
+
+---
+
+## Post-Hoc Cohen's *d* Matrix
+
+![](figures/posthoc_heatmap.png)
+
+---
+
+## Children Are Not Small Elderly
+
+**Children's SRT profile** — elevated $t_0$, elevated $\lambda$, reduced $\kappa$:
+
+- Not just slower on every trial — an **increased proportion of trials with substantial delays**
+- Compatible with intermittent **attentional lapses** rather than a stable speed deficit
+
+**Older adults' SRT profile** — elevated $t_0$ (largest), elevated $\lambda$, preserved $\kappa$:
+
+- Large $t_0$: **elevated sensorimotor floor** (delayed response preparation)
+- Better characterized as **compound slowing** with relatively preserved trial-to-trial consistency
+
+> Children and older adults **differed significantly** on $\kappa$ ($d$ = −0.65, $p$ < .001) — children showed substantially more variable responding.
+
+---
+
+## Connection to Drift-Diffusion Models
+
+| DDM finding (Ratcliff et al.) | Weibull analog |
+|---|---|
+| Older adults: ↑ boundary separation + ↑ non-decision time | ↑ $t_0$ (sensorimotor floor), compound slowing |
+| Children: ↓ drift rate + ↑ variability in non-decision time | ↑ $\lambda$ (reduced efficiency) + ↓ $\kappa$ (inconsistency) |
+
+The Weibull decomposition **extends this dissociation to SRT**, where DDM is not identifiable (no error responses).
+
+The Weibull decomposes what DDM lumps together as non-decision time $T_{er}$.
+
+---
+
+## Methodological Contributions
+
+1. **HBM for sparse data** — With 20 trials, MLE is unstable. HBM's partial pooling borrows strength across up to 1,297 participants. The advantage is greatest where most needed.
+
+2. **Tablet-based distributional analysis** — Hardware-level SRT/MT separation without specialized equipment. Feasible in schools, community centers, clinical settings.
+
+3. **Mandatory SRT/MT dissociation** — The crossing pattern ($\lambda$ dominates SRT, $t_0$ dominates MT) would be **completely obscured** by collapsing across both response phases.
+
+---
+
+## Limitations
+
+| Limitation | Mitigation |
+|---|---|
+| 20-trial protocol | HBM recovers parameters comparable to MLE with more trials |
+| Cross-sectional design | Consistent with longitudinal literature |
+| Young adults = university students | Effect sizes remain large ($d$ = 0.83–1.65) |
+| No middle-aged adults (30–65) | Future web-based study with continuous age coverage |
+| Parameter interpretations not experimentally tested | SRT–MT crossing is non-circular evidence |
+
+---
+
+## Future Directions
+
+1. **Contamination mixture** — add lapse component for participants with extreme slow responses
+2. **Longitudinal design** — do within-person $\lambda$ increases precede cognitive decline?
+3. **Clinical applications** — reduced $\kappa$ resembles ADHD attentional profile; Weibull parameters as preclinical markers
+4. **Experimental selective influence** — factorial manipulation of foreperiod, stimulus intensity, cognitive load
+5. **Weibull–DDM bridge** — $t_0$ as decomposition of DDM non-decision time; developmental data as test bed
+
+---
+
+## Summary
+
+> **The U-shaped RT trajectory across the lifespan is not the product of a single factor rising and falling.**
+
+- Children's slow SRT reflects **reduced central efficiency + attentional inconsistency** (↑ $\lambda$, $d$ = 1.65; ↓ $\kappa$, $d$ = −0.83), on top of an elevated peripheral floor (↑ $t_0$, $d$ = 1.47)
+- Older adults' slow SRT reflects primarily an **elevated sensorimotor floor** (↑ $t_0$, $d$ = 1.38) with compound central slowing (↑ $\lambda$, $d$ = 1.16) but **preserved consistency** ($\kappa$, $d$ = −0.14, n.s.)
+- The **SRT–MT crossing** ($\lambda$ dominates SRT; $t_0$ dominates MT) validates the stage-based parameter interpretation
+- **HBM** makes this decomposition feasible with sparse data
+- **Tablet-based assessment** makes it deployable outside the laboratory
+
+---
+
+## References
+
+- Bartzokis et al. (2010). Lifespan trajectory of myelin integrity. *Neurobiology of Aging*, 31(9).
+- Cerella & Hale (1994). Rise and fall in information-processing rates. *Acta Psychologica*, 86.
+- Der & Deary (2006). Age and sex differences in reaction time. *Psychology and Aging*, 21(1).
+- Dykiert et al. (2012). Age differences in IIV. *PLoS ONE*, 7(10).
+- Forrence et al. (2023). Age-related SRT slowing reflects slower response preparation.
+- Kail (1991). Developmental change in speed of processing. *Psychological Bulletin*, 109(3).
+- Ratcliff et al. (2006, 2012). Aging and the drift-diffusion model.
+- Rouder et al. (2003). HBM framework for RT distributions. *Psychometrika*, 68(4).
+- Rouder et al. (2005). Hierarchical model for RT distributions. *Psychonomic Bulletin & Review*, 12(2).
+- Salthouse (1996). Processing-speed theory. *Psychological Review*, 103(3).
+- Williams et al. (2005). Inconsistency in RT across the life span. *Neuropsychology*, 19(1).

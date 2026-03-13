@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Different Routes of RT Slowing — HBM Lecture</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --r-background-color: #fafaf8;
+    --r-main-font: 'IBM Plex Sans', sans-serif;
+    --r-heading-font: 'DM Serif Display', serif;
+    --r-main-font-size: 28px;
+    --r-heading-color: #1a1a2e;
+    --r-main-color: #2d2d3a;
+    --r-link-color: #4a6fa5;
+    --accent: #c0392b;
+    --accent2: #2874a6;
+    --child-color: #e74c3c;
+    --elder-color: #2c3e50;
+    --dev-blue: #3498db;
+    --age-green: #27ae60;
+    --muted: #7f8c8d;
+    --card-bg: #ffffff;
+  }
+
+  .reveal {
+    font-weight: 300;
+  }
+
+  .reveal h1, .reveal h2, .reveal h3 {
+    text-transform: none;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .reveal h1 { font-size: 2.0em; }
+  .reveal h2 { font-size: 1.45em; margin-top: 0; margin-bottom: 0.3em; }
+  .reveal h3 { font-size: 1.1em; font-family: var(--r-main-font); font-weight: 600; color: var(--accent2); }
+  .reveal h4 { font-size: 0.9em; font-family: var(--r-main-font); font-weight: 600; color: var(--accent); margin-top: 0.7em; margin-bottom: 0.3em; }
+
+  .reveal p, .reveal li {
+    line-height: 1.55;
+    font-size: 0.82em;
+  }
+
+  .reveal .slides section {
+    padding: 10px 40px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Title slide */
+  .reveal .slides > section.title-slide {
+    text-align: left !important;
+  }
+  .reveal .slides > section.title-slide h1 {
+    font-size: 1.75em !important;
+    border-left: 5px solid var(--accent);
+    padding-left: 24px;
+    margin-bottom: 0.3em;
+  }
+  .reveal .slides > section.title-slide h3 {
+    font-size: 0.72em !important;
+    color: var(--muted) !important;
+    font-weight: 300 !important;
+    font-family: var(--r-main-font) !important;
+    margin-left: 29px;
+  }
+
+  /* Section divider slides — same background, centered, prominent heading */
+  .reveal .slides > section.section-divider {
+    text-align: center !important;
+  }
+  .reveal .slides > section.section-divider h2 {
+    color: var(--r-heading-color) !important;
+    font-size: 2em !important;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+    padding-bottom: 8px;
+  }
+  .reveal .slides > section.section-divider p {
+    color: var(--muted);
+    font-size: 0.75em;
+  }
+
+  /* Table */
+  .reveal table {
+    font-size: 0.58em;
+    border-collapse: collapse;
+    margin: 0 auto;
+  }
+  .reveal table th {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 8px 12px;
+    font-weight: 500;
+  }
+  .reveal table td {
+    padding: 6px 12px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .reveal table tr:nth-child(even) td {
+    background: #f8f8f6;
+  }
+
+  /* Blockquote as finding-box */
+  .reveal blockquote {
+    background: #fff8f0;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 20px;
+    margin: 0.6em 0;
+    font-style: normal;
+    font-size: 0.85em;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  /* Code blocks */
+  .reveal pre {
+    font-size: 0.62em;
+    box-shadow: none;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+  }
+  .reveal code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88em;
+    background: #f4f4f2;
+    padding: 0 4px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+  .reveal pre code { background: transparent; color: inherit; padding: 0; }
+
+  /* Lists */
+  .reveal ul { margin-left: 0.6em; }
+  .reveal ul li { margin-bottom: 0.35em; }
+  .reveal ul li::marker { color: var(--accent2); }
+  .reveal ol li { margin-bottom: 0.35em; }
+
+  /* Strong / emphasis colors */
+  .reveal strong { color: var(--accent2); }
+  .reveal em { color: var(--muted); font-style: italic; }
+
+  /* Slide number */
+  .reveal .slide-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Tag / badge helpers */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.6em;
+    font-weight: 500;
+  }
+  .tag-child  { background: #fce4e4; color: var(--child-color); }
+  .tag-elder  { background: #d6eaf8; color: var(--elder-color); }
+  .tag-method { background: #eafaf1; color: #1e8449; }
+
+  /* Two-column layout */
+  .two-col { display: flex; gap: 30px; align-items: flex-start; flex: 1; min-height: 0; }
+  .two-col .col { flex: 1; min-height: 0; }
+
+  /* Stat cards */
+  .stat-row { display: flex; gap: 20px; justify-content: center; margin: 0.8em 0; flex-wrap: wrap; }
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 130px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .stat-card .number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.6em;
+    font-weight: 500;
+    color: var(--accent2);
+    display: block;
+  }
+  .stat-card .label { font-size: 0.55em; color: var(--muted); margin-top: 4px; display: block; }
+
+  /* Key finding box */
+  .finding-box {
+    background: #fff8f0;
+    border-left: 4px solid var(--accent);
+    padding: 14px 20px;
+    margin: 0.6em 0;
+    border-radius: 0 6px 6px 0;
+    text-align: left;
+    font-size: 0.78em;
+  }
+
+  /* Footnote */
+  .footnote {
+    position: absolute;
+    bottom: 18px;
+    left: 40px;
+    font-size: 0.4em;
+    color: #aaa;
+  }
+
+  /* Image — constrain to fit slide */
+  .reveal img { max-width: 100%; max-height: 480px; object-fit: contain; border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .caption { font-size: 0.48em; color: var(--muted); margin-top: 6px; }
+
+  /* Two-col images can be taller since they share width */
+  .two-col .col img { max-height: 420px; }
+
+  /* Title and section divider slides stay centered */
+  .reveal .slides > section.title-slide,
+  .reveal .slides > section.section-divider {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+</head>
+
+<body>
+<div class="reveal">
+  <div class="slides">
+    <section
+      data-markdown="HBM_lecture.md"
+      data-separator="^---$"
+      data-separator-vertical="^--$"
+      data-separator-notes="^Note:"
+      data-charset="utf-8"
+    ></section>
+  </div>
+</div>
+
+<!-- MathJax 3 — processes $...$ and $$...$$ -->
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/notes/notes.min.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    width: 1200,
+    height: 700,
+    margin: 0.04,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    center: false,
+    pdfSeparateFragments: false,
+    mouseWheel: false,
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+  });
+
+  // Re-typeset MathJax when slides render
+  Reveal.on('slidechanged', () => {
+    if (window.MathJax) MathJax.typesetPromise();
+  });
+  Reveal.on('ready', () => {
+    if (window.MathJax) MathJax.typesetPromise();
+  });
+
+  // Zoom with Ctrl+scroll, navigate with plain scroll
+  let scrollCooldown = false;
+  let currentZoom = 1;
+  window.addEventListener('wheel', function(e) {
+    if (e.ctrlKey) {
+      e.preventDefault();
+      var delta = e.deltaY > 0 ? -0.1 : 0.1;
+      currentZoom = Math.min(3, Math.max(0.3, currentZoom + delta));
+      document.querySelector('.reveal').style.transform = 'scale(' + currentZoom + ')';
+      document.querySelector('.reveal').style.transformOrigin = 'center center';
+      return;
+    }
+
+    if (scrollCooldown) return;
+    scrollCooldown = true;
+
+    var isOverview = Reveal.isOverview();
+    var delay = isOverview ? 50 : 300;
+
+    if (e.deltaY > 0 || e.deltaX > 0) {
+      Reveal.next();
+    } else if (e.deltaY < 0 || e.deltaX < 0) {
+      Reveal.prev();
+    }
+    setTimeout(function() { scrollCooldown = false; }, delay);
+  }, { passive: false });
+</script>
+</body>
+</html>
