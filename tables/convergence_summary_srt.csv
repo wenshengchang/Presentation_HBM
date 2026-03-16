@@ -1,0 +1,4 @@
+Parameter,N,Median_Rhat,Max_Rhat,Pct_Rhat_lt_1.10,Median_ESS,Min_ESS,Pct_ESS_gt_100
+shift,1652,1.003,3.401,95.2,604,30,94.9
+scale,1652,1.002,1.328,96.7,674,47,97.3
+shape,1652,1.002,3.725,95.1,884,30,95.7

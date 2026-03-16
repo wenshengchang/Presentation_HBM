@@ -1,0 +1,16 @@
+Param1,Param2,r_overall,p_overall,r_partial,p_partial,effect_size
+shift_SRT,scale_SRT,0.4191,0.000000,0.4179,0.000000,moderate
+shift_SRT,shape_SRT,-0.4953,0.000000,-0.4986,0.000000,moderate
+shift_SRT,shift_MT,0.4542,0.000000,0.4478,0.000000,moderate
+shift_SRT,scale_MT,0.3858,0.000000,0.3811,0.000000,moderate
+shift_SRT,shape_MT,-0.2272,0.000000,-0.2436,0.000000,small
+scale_SRT,shape_SRT,-0.2455,0.000000,-0.2463,0.000000,small
+scale_SRT,shift_MT,0.5690,0.000000,0.5725,0.000000,large
+scale_SRT,scale_MT,0.6648,0.000000,0.6648,0.000000,large
+scale_SRT,shape_MT,-0.2808,0.000000,-0.2893,0.000000,small
+shape_SRT,shift_MT,-0.2242,0.000000,-0.2311,0.000000,small
+shape_SRT,scale_MT,-0.2005,0.000000,-0.2029,0.000000,small
+shape_SRT,shape_MT,0.1197,0.000001,0.1184,0.000001,small
+shift_MT,scale_MT,0.6477,0.000000,0.6448,0.000000,large
+shift_MT,shape_MT,-0.3775,0.000000,-0.4158,0.000000,moderate
+scale_MT,shape_MT,-0.2955,0.000000,-0.3134,0.000000,moderate
